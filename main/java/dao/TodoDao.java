@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 
 public class TodoDao {
 
-	long id;
-	String username;
-	String description;
-	int stage;
-	int priority;
-	Timestamp regDate;
+	public long id;
+	public String username;
+	public String description;
+	public int stage;
+	public int priority;
+	public Timestamp regDate;
 	
 	public TodoDao(long id, String username, String description, int stage, int priority, Timestamp regDate) {
 		super();
