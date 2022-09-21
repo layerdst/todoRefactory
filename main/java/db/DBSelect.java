@@ -4,20 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.TodoDao;
+import dao.TodoDto;
 
 
 
 
 public class DBSelect {
 
-
-
-	List<TodoDao> list =new ArrayList<>();
+	List<TodoDto> list =new ArrayList<>();
 	
 	Connection conn = null;
 	Statement stmt = null;

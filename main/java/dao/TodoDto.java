@@ -1,17 +1,18 @@
 package dao;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
-public class TodoDao {
+public class TodoDto {
 
 	public long id;
 	public String username;
 	public String description;
 	public int stage;
 	public int priority;
-	public Timestamp regDate;
+	public Date regDate;
 	
-	public TodoDao(long id, String username, String description, int stage, int priority, Timestamp regDate) {
+	public TodoDto(long id, String username, String description, int stage, int priority, Date regDate) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -25,7 +26,7 @@ public class TodoDao {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return id + username+description;
+		return id + username+description+regDate;
 	}
 	
 	

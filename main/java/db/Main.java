@@ -3,17 +3,20 @@ package db;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.List;
 
-import dao.TodoDao;
+import dao.TodoDto;
 
 public class Main {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		DBSelect dbSelect = new DBSelect();
 //		List<TodoDao> list= dbSelect.getTodos();
 
-		Class strClass = TodoDao.class;
+		Class strClass = TodoDto.class;
 		Constructor[] cons = strClass.getConstructors();
+
+		System.out.println(TodoDto.class.getName());
+
+
 		for(Constructor c : cons){
 			System.out.println(c);
 		}
@@ -22,7 +25,10 @@ public class Main {
 
 		Field[] fields = strClass.getFields();
 		for(Field f : fields){
-			System.out.println(f);
+			String fieldName = f.getName();
+			String typeName = f.getType().getTypeName();
+
+			System.out.println(typeName + " " + fieldName);
 		}
 
 //		DB db = new DB();
