@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/add")
-public class AddTodo extends HttpServlet {
+@WebServlet(name="todoSaveServlet", urlPatterns = "/save")
+public class AddTodoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     @Override

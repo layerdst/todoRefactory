@@ -1,17 +1,6 @@
 package db;
 
 
-import dao.TodoDto;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.sql.*;
-import java.sql.Date;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static db.DBInfo.*;
-
 public class DB {
 
 //    private final DBConnections conn;

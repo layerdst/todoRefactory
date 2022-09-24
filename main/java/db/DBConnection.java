@@ -7,16 +7,27 @@ import java.sql.SQLException;
 
 import static db.DBInfo.*;
 
-public class DBConnections {
-    private final Connection conn;
-    private final PreparedStatement psmt;
+public class DBConnection {
+    private Connection conn = null;
+    private PreparedStatement psmt = null;
 
-    public DBConnections(String sql){
+    private static DBConnection instance;
+
+    public static DBConnection getInstance(){
+        if(instance == null){
+            instance = new DBConnection();
+        }
+        return instance;
+    }
+
+    public PreparedStatement setParamSql(String sql){
         try{
             this.conn = DriverManager.getConnection(DB_ADDR_MYSQL, DB_USER, DB_PW);
             this.psmt = conn.prepareStatement(sql);
+            return psmt;
         }catch (Exception e){
-            throw new IllegalArgumentException("DB 주소나 유저정보가 잘못되었음");
+            e.printStackTrace();
+            throw new IllegalArgumentException("DB 접속에 문제가 있음");
         }
     }
 

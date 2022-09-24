@@ -10,12 +10,9 @@
 <body>
 	<header>할일등록</header>
 	<section>
-		<form action="">
+		<form action="/save" method = "post">
 			<label for="todo_input">어떤일인가요?</label> 
 			<input type="text" id="todo_input" />
-			 
-			<label for="todo_who">누가 할일인가요?</label> 
-			<input type="text" id="todo_who" />
 			
 			<label for="todo_who">어떤일인가요?</label>
 			<input type="text" id="todo_who" />
