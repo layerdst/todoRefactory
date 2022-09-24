@@ -1,9 +1,7 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import javax.xml.transform.Result;
+import java.sql.*;
 
 import static db.DBInfo.*;
 
@@ -11,8 +9,22 @@ public class DBConnection {
     private Connection conn = null;
     private PreparedStatement psmt = null;
 
-    private static DBConnection instance;
+    public Connection getConn() {
+        return conn;
+    }
 
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void setPsmt(PreparedStatement psmt) {
+        this.psmt = psmt;
+    }
+
+    private static DBConnection instance;
+    public static void setInstance(DBConnection instance) {
+        DBConnection.instance = instance;
+    }
     public static DBConnection getInstance(){
         if(instance == null){
             instance = new DBConnection();
@@ -35,12 +47,15 @@ public class DBConnection {
         return psmt;
     }
 
-    public void closedConnection() throws SQLException {
-        if(conn!=null){
-            conn.close();
+    public void  closedConnection(Connection conns, PreparedStatement psmts, ResultSet rs) throws SQLException {
+        if(conns!=null){
+            conns.close();
         }
-        if(psmt!=null){
-            psmt.close();
+        if(psmts!=null){
+            psmts.close();
+        }
+        if(rs != null){
+            rs.close();
         }
     }
 }

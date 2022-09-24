@@ -47,8 +47,11 @@ public interface DBUtil {
 
     private String paramInputSql(Map<String, String> sqlParam, String sql) {
         String tempSql = sql;
+
         for(Map.Entry entry: sqlParam.entrySet()){
-            tempSql = tempSql.replace(":"+entry.getKey().toString(),typeValue(entry.getValue().toString()));
+            String key = entry.getKey().toString();
+            String value =typeValue(entry.getValue().toString());
+            tempSql = tempSql.replace(":"+key, value);
         }
         return tempSql;
     }

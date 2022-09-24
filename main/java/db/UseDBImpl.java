@@ -15,15 +15,14 @@ import java.util.Map;
 
 public class UseDBImpl implements UseDB{
 
-
     private final DBConnection dbconn = DBConnection.getInstance();
     private ResultSet rs = null;
-
 
     @Override
     public int insert(String sql, Map<String, String> param) throws SQLException {
         int count = 0;
         count = dbconn.setParamSql(setSql(param, sql)).executeUpdate();
+        dbconn.closedConnection(dbconn.getConn(), dbconn.getPsmt(), null);
         return count;
     }
 
@@ -31,28 +30,16 @@ public class UseDBImpl implements UseDB{
     public <T> List<T> select(Class<T> t, String sql) throws SQLException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         ResultSet resultSet = dbconn.setParamSql(sql).executeQuery();
         List<T> selectList = getSelectList(t, resultSet);
+        dbconn.closedConnection(dbconn.getConn(), dbconn.getPsmt(), rs);
         return selectList;
-    }
-
-    @Override
-    public <T> List<T> select(Class<T> t,Map<String, String> param, String sql) {
-       return null;
-    }
-
-    @Override
-    public <T> T selectOne(Map<String, String> param, String sql){
-        return null;
     }
 
     @Override
     public int update(Map<String, String> param, String sql) throws SQLException {
         int count = 0;
         count = dbconn.setParamSql(setSql(param, sql)).executeUpdate();
+        dbconn.closedConnection(dbconn.getConn(), dbconn.getPsmt(), null);
         return count;
     }
-
-
-
-
-
+    
 }

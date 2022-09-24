@@ -79,24 +79,15 @@ public class Main {
 
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-		DBSelect dbSelect = new DBSelect();
-
 
 		Class strClass = TodoDto.class;
 		Constructor[] cons = strClass.getConstructors();
 		System.out.println(strClass.getDeclaredConstructors());
 
-//
-//		for(Constructor c : cons){
-//			System.out.println(c.getParameterTypes());
-//		}
-
 		Field[] fields = strClass.getFields();
 		Map<String, Object> tempMap = new LinkedHashMap<>();
 		Map<String, String> temp = Arrays.stream(fields).collect(
 				Collectors.toMap(v->v.getName(), v->v.getType().getTypeName()));
-
-
 
 		Main m = new Main();
 
@@ -109,58 +100,14 @@ public class Main {
 
 		UseDB us = new UseDBImpl();
 		List<TodoDto> select = us.select(TodoDto.class, "select * from todo");
-
-		System.out.println(select.size());
-		System.out.println(select.get(0).getDescription());
 		System.out.println(select);
-
 		TodoDto dto = new TodoDto();
-////
-//		Constructor cs = strClass.getConstructor(new Class[]{long.class, String.class, String.class, int.class, int.class, Date.class});
+
 		dto.getClass();
 		Constructor cs2 = strClass.getConstructor();
 		TodoDto gDto = (TodoDto) cs2.newInstance();
 
-		System.out.println(tempMap.get("id"));
 		Object setId = strClass.getMethod("setId", (Class<?>) tempMap.get("id")).invoke(gDto,new Object[]{51224});
-//		System.out.println(gDto.getId());
-//
-//		Main maa = new Main();
-//
-//		ResultSet rs = null;
-
-
-
-//		Arrays.stream(strClass.getMethods())
-//				.filter(v->tempMap.entrySet()
-//						.stream()
-//						.filter(
-//								(str)-> {
-
-//									if (tempMethodName.equals(v)) {
-//										try {
-//											strClass.getMethod(v.getName(), Long.class);
-//										} catch (NoSuchMethodException e) {
-//											throw new RuntimeException(e);
-//										}
-//									}
-//								}
-//						)
-//				).collect()
-
-
-//		System.out.println("===========");
-//		System.out.println(gDto.getId());
-//
-//		System.out.println(dto);
-//
-//
-//
-//		UseDB<Object> db = new UseDBImpl<>();
-//		db.select("select * from todo");
-//
-//		System.out.println("------");
-//		System.out.println(tempMap);
 
 		Map<String, String> updateParam = new HashMap<>();
 		updateParam.put("id", "1");
