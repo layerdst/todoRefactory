@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MakeSqlTest extends TestCase {
+public class DBUtilTest extends TestCase {
 
     public static String sql = "insert table asdfa (a) values( :id , :name )";
     public static UseDBImpl ma = new UseDBImpl();

@@ -61,7 +61,6 @@ public class TodoDto {
 	}
 
 	public TodoDto(){
-
 	}
 	public TodoDto(long id, String username, String description, int stage, int priority, Date regDate) {
 		super();

@@ -12,7 +12,7 @@ public class UseDBImplTest extends TestCase {
 
 
     public static void main(String[] args) throws SQLException {
-        UseDB<Object> us = new UseDBImpl();
+        UseDB us = new UseDBImpl();
         Map<String, String > temp = new HashMap<>();
         temp.put("username", "test");
         temp.put("description", "java");

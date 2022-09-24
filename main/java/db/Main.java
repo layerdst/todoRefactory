@@ -107,38 +107,27 @@ public class Main {
 		}
 
 
+		UseDB us = new UseDBImpl();
+		List<TodoDto> select = us.select(TodoDto.class, "select * from todo");
 
-		UseDB db = new UseDBImpl<>();
+		System.out.println(select.size());
+		System.out.println(select.get(0).getDescription());
+		System.out.println(select);
 
-
-
-
-
-//
-		Constructor cs = strClass.getConstructor(new Class[]{long.class, String.class, String.class, int.class, int.class, Date.class});
+		TodoDto dto = new TodoDto();
+////
+//		Constructor cs = strClass.getConstructor(new Class[]{long.class, String.class, String.class, int.class, int.class, Date.class});
+		dto.getClass();
 		Constructor cs2 = strClass.getConstructor();
 		TodoDto gDto = (TodoDto) cs2.newInstance();
-		TodoDto dto = (TodoDto) cs.newInstance(11L, "22", "22", 3,2, Date.valueOf(LocalDateTime.now().toLocalDate()));
 
-
-		Arrays.stream(
-				strClass.getMethods())
-				.iterator()
-				.forEachRemaining(
-						v-> {
-							if(v.getName().contains("Id")){
-								gDto.setId(1L);
-							}
-						}
-				);
-
-
+		System.out.println(tempMap.get("id"));
 		Object setId = strClass.getMethod("setId", (Class<?>) tempMap.get("id")).invoke(gDto,new Object[]{51224});
-		System.out.println(gDto.getId());
-
-		Main maa = new Main();
-
-		ResultSet rs = null;
+//		System.out.println(gDto.getId());
+//
+//		Main maa = new Main();
+//
+//		ResultSet rs = null;
 
 
 
@@ -173,6 +162,16 @@ public class Main {
 //		System.out.println("------");
 //		System.out.println(tempMap);
 
+		Map<String, String> updateParam = new HashMap<>();
+		updateParam.put("id", "1");
+		String updateSql = "update todo \n" +
+				"\tset stage = case \n" +
+				"\t\twhen stage = 1 then 2\n" +
+				"        when stage = 2 then 3\n" +
+				"        else 3\n" +
+				"        end\n" +
+				"\twhere id = 1";
+		System.out.println(us.update(updateParam, updateSql));
 
 	}
 
