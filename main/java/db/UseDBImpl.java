@@ -27,7 +27,7 @@ public class UseDBImpl implements UseDB{
     }
 
     @Override
-    public <T> List<T> select(Class<T> t, String sql) throws SQLException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+    public <T> List<T> select(Class<T> t, String sql) throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         ResultSet resultSet = dbconn.setParamSql(sql).executeQuery();
         List<T> selectList = getSelectList(t, resultSet);
         dbconn.closedConnection(dbconn.getConn(), dbconn.getPsmt(), rs);
@@ -35,11 +35,11 @@ public class UseDBImpl implements UseDB{
     }
 
     @Override
-    public int update(Map<String, String> param, String sql) throws SQLException {
+    public int update(String sql, Map<String, String> param) throws SQLException {
         int count = 0;
         count = dbconn.setParamSql(setSql(param, sql)).executeUpdate();
         dbconn.closedConnection(dbconn.getConn(), dbconn.getPsmt(), null);
         return count;
     }
-    
+
 }

@@ -5,10 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface DBUtil {
     default String setSql(Map<String, String> sqlParam, String sql) {
@@ -16,7 +13,7 @@ public interface DBUtil {
     }
 
 
-    default  <T> List<T> getSelectList(Class<T> t, ResultSet rs) throws SQLException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+    default  <T> List<T> getSelectList(Class<T> t, ResultSet rs) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<T> dtos = new ArrayList<>();
         Class classDto = t;
         Field[] fields = classDto.getFields();
@@ -41,7 +38,7 @@ public interface DBUtil {
             }
             dtos.add((T) temp);
         }
-        return dtos;
+        return dtos!=null ? null : Collections.emptyList();
     }
 
 
@@ -76,7 +73,7 @@ public interface DBUtil {
         switch (type){
             case "long" : obj = rs.getInt(name); break;
             case "class java.lang.String" : obj =rs.getString(name); break;
-            case "int" : obj =rs.getInt(name);break;
+            case "int" : obj =rs.getInt(name); break;
             case "class java.sql.Date" : obj =rs.getDate(name); break;
         }
         return obj;
