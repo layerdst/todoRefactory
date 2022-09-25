@@ -1,5 +1,7 @@
 package db.use;
 
+import dto.TodoDto;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -11,7 +13,6 @@ public interface DBUtil {
     default String setSql(Map<String, String> sqlParam, String sql) {
         return paramInputSql(sqlParam, sql);
     }
-
 
     default  <T> List<T> getSelectList(Class<T> t, ResultSet rs) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<T> dtos = new ArrayList<>();
@@ -38,7 +39,7 @@ public interface DBUtil {
             }
             dtos.add((T) temp);
         }
-        return dtos!=null ? null : Collections.emptyList();
+        return dtos==null ? Collections.emptyList() : dtos;
     }
 
 
@@ -84,11 +85,6 @@ public interface DBUtil {
     }
 
     private <CL, T> void setMethod( Class<CL> CL, String methodName, Class<?> referenceClass, T dto, Object data) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        CL.getMethod(methodName, referenceClass).invoke(dto,new Object[]{data});
+        CL.getMethod(methodName, referenceClass).invoke(dto,new Object[]{data}); //todoDTO -> resustSet 값들을 setter 입력 toDoDto 반환됨.
     }
-
-
-
-
-
 }

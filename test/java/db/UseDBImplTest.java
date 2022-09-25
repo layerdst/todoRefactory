@@ -19,5 +19,7 @@ public class UseDBImplTest extends TestCase {
         temp.put("description", "java");
         temp.put("priority", "1");
         System.out.println(us.insert("insert into todo (username, description, priority) values( :username , :description , :priority )",temp));
+
+
     }
 }

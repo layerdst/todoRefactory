@@ -71,12 +71,8 @@ public class Main {
 			}
 			dtos.add((T) temp);
 		}
-
 		return dtos;
 	}
-
-
-
 
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -87,16 +83,20 @@ public class Main {
 
 		Field[] fields = strClass.getFields();
 		Map<String, Object> tempMap = new LinkedHashMap<>();
-		Map<String, String> temp = Arrays.stream(fields).collect(
-				Collectors.toMap(v->v.getName(), v->v.getType().getTypeName()));
+//		Map<String, String> temp = Arrays.stream(fields).collect(
+//				Collectors.toMap(v->v.getName(), v->v.getType().getTypeName()));
 
 		Main m = new Main();
 
 		for(Field f : fields){
 			String fieldName = f.getName();
 			String typeName = f.getType().getTypeName();
-			tempMap.put(fieldName, m.setTypeClass(typeName));
+			tempMap.put(fieldName, typeName);
 		}
+
+		System.out.println("---------");
+		System.out.println(tempMap);
+		System.out.println("---------");
 
 
 		UseDB us = new UseDBImpl();
