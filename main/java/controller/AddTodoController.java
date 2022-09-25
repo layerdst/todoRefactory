@@ -18,6 +18,7 @@ public class AddTodoController extends HttpServlet {
     @Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String viewPath  = "WEB-INF/view/add_todo.jsp";
+		String name = req.getParameter("name");
 		RequestDispatcher dispather= req.getRequestDispatcher(viewPath);
 		dispather.forward(req, resp);
 	}

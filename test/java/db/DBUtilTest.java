@@ -1,5 +1,6 @@
 package db;
 
+import db.use.UseDBImpl;
 import junit.framework.TestCase;
 
 import java.util.HashMap;

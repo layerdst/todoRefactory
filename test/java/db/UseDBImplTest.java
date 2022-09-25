@@ -1,7 +1,8 @@
 package db;
 
+import db.use.UseDB;
+import db.use.UseDBImpl;
 import junit.framework.TestCase;
-import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.HashMap;

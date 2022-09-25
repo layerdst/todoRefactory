@@ -1,4 +1,4 @@
-package db;
+package db.use;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;

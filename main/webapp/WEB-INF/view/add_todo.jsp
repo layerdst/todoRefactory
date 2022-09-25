@@ -11,11 +11,11 @@
 	<header>할일등록</header>
 	<section>
 		<form action="/save" method = "post">
-			<label for="todo_input">어떤일인가요?</label> 
-			<input type="text" id="todo_input" />
+			<label for="name">어떤일인가요?</label>
+			<input type="text" id="name" name = "todo_input" />
 			
-			<label for="todo_who">어떤일인가요?</label>
-			<input type="text" id="todo_who" />
+			<label for="description">어떤일인가요?</label>
+			<input type="text" id="description" name="description" />
 			
 			<p> 우선순위를 선택하세요 </p>
 			<div>

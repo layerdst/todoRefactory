@@ -1,5 +1,7 @@
 package db;
 
+import db.use.UseDB;
+import db.use.UseDBImpl;
 import dto.TodoDto;
 
 import java.lang.reflect.Constructor;
@@ -7,7 +9,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.sql.Date;
@@ -118,7 +119,6 @@ public class Main {
 				"        else 3\n" +
 				"        end\n" +
 				"\twhere id = 1";
-		System.out.println(us.update(updateParam, updateSql));
 
 	}
 

@@ -1,9 +1,8 @@
-package db;
+package db.connect;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 
-import static db.DBInfo.*;
+import static db.source.DBInfo.*;
 
 public class DBConnection {
     private Connection conn = null;

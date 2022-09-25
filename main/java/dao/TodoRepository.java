@@ -1,17 +1,13 @@
 package dao;
 
-import db.DBSql;
-import db.UseDB;
-import db.UseDBImpl;
+import db.use.UseDB;
+import db.use.UseDBImpl;
 import dto.TodoDto;
-import static db.DBSql.*;
+import static db.source.DBSql.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 public class TodoRepository {

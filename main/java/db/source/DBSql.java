@@ -1,4 +1,4 @@
-package db;
+package db.source;
 
 public class DBSql {
     public static String GET_ALL_TODO = "select * from todo";
