@@ -80,7 +80,7 @@ closedConnection(connection, preparestatement, null) // 나머지 쿼리문
 
 
 ## SQL Mapping
-- PrepareStatement 에서 sql 쿼리문을 실행하게 되는데, 이때 sql은 입력되는 파라미터에 의해 동적으로 생성이 가능해야 하는데 기존 JDBC 에서는 아래와 같이 활용이 되고 있다.
+- PrepareStatement 에서 sql 쿼리문을 실행할수 있다. 이때 쿼리문은 입력되는 값으로 동적으로 생성이 가능해야 하는데 기존 JDBC 에서는 아래와 같이 활용이 되고 있다.
 ```java
 String insertSql = "insert into todo (username, description, priority) values (?, ?, 1 );
 psmt = conn.prepareStatement(sql);
