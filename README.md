@@ -32,9 +32,31 @@ graph TD;
 - 위 프로세스에서 각 쿼리구문들은 Connection, PrepareStatement, close 라는 공통적인 부분이 존재하기 때문에 별도로 분리하여 구조화 시킬수 있다.
 
 ## 공통 프로세스 분리 - Connection, PrepareStatement, close
-- 위 프로세스에서 Connection 과 PrepareStatement는 DB 를 사용하기 위해서 무조건 사용해야 하는 객체이기 때문에 **DBConnection** 에서 별도로 정의해 놓았다.
+- 위 프로세스에서 Connection 과 PrepareStatement는 DB 를 사용하기 위해서 무조건 사용해야 하는 객체이기 때문에 **DBConnection** 에서 별도로 정의해 놓으면서 중복되는 코드를 줄일 수 있다.
 
-### Connection, PrepareSateMent
+#### 이전의 코드
+```java
+
+String sql = "select id, username, description, stage, priority, regdate from todo";
+
+try(Connection conn = DriverManager.getConnection(DB_ADDR_MYSQL, DB_USER, DB_PW);
+	PrepareStatement psmt = conn.prepareStatement(sql);
+	ResultSet rs = ps.executeQuery())
+{
+	
+}catch(Exception e){
+	e.printStackTrace();
+}
+```
+
+#### 이후의 코드 
+```java
+DBConnection dbconn = DBConnection.getInstance();
+dbconn.setParameter(sql).excuteQuery();
+close(connection, prepareStatement, resultSet);
+```
+
+### Connection, PrepareSateMent 코드 정리
 - Connection 에 필요한 은 DB address,  ID, PW 를 필요로하는데 이 정보는 DBInfo에서 static 필드로 저장하여 사용했다.
 ```java
 public class DBInfo {  
@@ -57,6 +79,7 @@ public PreparedStatement setParamSql(String sql){
     }  
 }
 ```
+
 ### Close
 - Select 문에서는 Connection, PrepareStatement, ResultSet, 나머지 쿼리문에서는 Connection, PrepareStatement 순으로 close 메소드가 실행되어야 한다.
 ```java
@@ -80,7 +103,9 @@ closedConnection(connection, preparestatement, null) // 나머지 쿼리문
 
 
 ## SQL Mapping
-- PrepareStatement 에서 sql 쿼리문을 실행할수 있다. 이때 쿼리문은 입력되는 값으로 동적으로 생성이 가능해야 하는데 기존 JDBC 에서는 아래와 같이 활용이 되고 있다.
+- PrepareStatement 에서 sql 쿼리문을 실행하게 되는데, 이때 sql은 입력되는 파라미터에 의해 동적으로 생성이 가능해야 하는데 기존 JDBC 에서는 아래와 같이 활용이 되고 있다.
+
+#### 이전 코드
 ```java
 String insertSql = "insert into todo (username, description, priority) values (?, ?, 1 );
 psmt = conn.prepareStatement(sql);
@@ -89,8 +114,8 @@ psmt.setString(2, "testDescription");
 psmt.setInt(3, 1);
 
 ```
-- DBUtil 에서는 JdbcTemplate 과 유사하게,Map을 활용하여 파라미터를 동적으로 입력할 수 있게 하였다.
-- Map 의 key - value 는 sql 문의 parameter - value 값과 대응되며, 아래와 같이 사용이 가능하다. 
+
+#### 이후 코드
 ```java
 String insertSql = "insert into todo (username, description, priority) values( :username , :description , :priority )";
 
@@ -98,11 +123,11 @@ Map<String, String> param = new HashMap();
 params.put("username", "testName");  
 testName.put("description", "testDescription");  
 params.put("priority", "1");
-
-UseDB useDB = new UseDBImpl();
-int resultCount = useDB.insert(insetSql, param);
 ```
-- 또한 입력 파라미터가 int 일때는 none-quotation , String  일때는 single-quotation 을 붙여주어 동적인 sql 문을 만들 수 있다.
+
+## SQL Mapping - String replace 를 이용한 sql 파라미터 주입
+- DBUtil 에서는 JdbcTemplate 과 유사하게,Map을 활용하여 파라미터를 동적으로 입력할 수 있게 하였다.
+- Map 의 key - value 는 sql 문의 parameter - value 값과 대응된다.
 ```java
 private String paramInputSql(Map<String, String> sqlParam, String sql) {  
     String tempSql = sql;  
@@ -115,7 +140,9 @@ private String paramInputSql(Map<String, String> sqlParam, String sql) {
     return tempSql;  
 }  
 
-// 입력된 value 값이 숫자인지 확인 후 숫자가 아니라면 single-quotation 을 입력해준다.
+```
+- 또한 입력 파라미터가 int 일때는 none-quotation , String  일때는 single-quotation 을 붙여주어 동적인 sql 문을 만들 수 있다.
+```java
 private String typeValue(String obj){  
     String temp = obj;  
     char check;  
@@ -130,10 +157,41 @@ private String typeValue(String obj){
         }  
     }  
     return t
+}
 ```
 
 
-## Java Replection 을  Dto 활용
+## ResultSet 
+- 이전 코드 
+```java
+String sql = "select id, username, description, stage, priority, regdate from todo";
+
+try(Connection conn = DriverManager.getConnection(DB_ADDR_MYSQL, DB_USER, DB_PW);
+	PrepareStatement psmt = conn.prepareStatement(sql);
+	ResultSet rs = ps.executeQuery()){
+
+	List<TodoDto> lists = new ArrayList<>();
+	while(rs.next()){
+		TodoDto tempDto = new TodoDot();
+		tempDto.setId(rs.getInt("id"));
+		tempDto.setUsername(rs.getString("username"));
+		.
+		.
+		lists.add(tempDto);
+	}
+
+	return lists;
+}catch(Exception e){
+	e.printStackTrace();
+}
+```
+- 이후 코드
+```java
+UseDB useDB = new UseDBImpl();
+useDB.select(TodoDto.class, sql);
+```
+
+## ResultSet - Java Replection 을 활용한 DB 조회방법
 - 자바 리플렉션은 자바 런타임 시점에서 클래스의 필드, 메소드등의 접근을 도와주는 자바 API 중 하나로서, 다양한 라이브러리에 사용되고 있다. 
 - 해당 Replection은 다음의 로직으로 활용되고 있다
 > 1. select 쿼리문을 실행하여 ResultSet 의 결과를 가져온다. 
@@ -180,11 +238,15 @@ dto.setUsername(rs.getString("username"));
 lists.add(dto);
 
 //동적인 dto list
-for(rs.next()){
 Class tempClass = TodoDto.class;
 
-
+for(rs.next()){	
+	Constructor csTemp = tempClass.getConstructor();
+	TodoDto tempDto = (TodoDto) csTemp.newInstance();
+	for(Map.Entry(String, Object) rsTempMap : tempMap.entrySet()){
+		TodoClass.getMethod(methodName, referenceClass).invoke(TodoDto.class, new Object[]{data});
+	}
+	lists.add((TodoDto) tempDto)
 }
-
 ```
 
